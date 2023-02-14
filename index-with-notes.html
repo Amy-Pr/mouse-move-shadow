@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1> <!--Contenteditable, you can edit it on the browser! Cool!-->
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1); /*The two pixel values are left and down*/
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+const hero = document.querySelector('.hero');
+const text = hero.querySelector('h1');
+const walk = 100; //100px, this is how many pixels our shadow can stretch total; play with this value to make them stretch further.
+
+function shadow(e) {
+  //const width = hero.offsetWidth;
+  //const height = hero.offsetHeight;
+
+  const { offsetWidth: width, offsetHeight: height } = hero; //area
+  let { offsetX: x, offsetY: y } = e; //position of mouse
+
+//console.log(this, e.target); // This is the 'hero' area, where we are listening for the event; but 'e.target' is where it gets triggered 
+
+if(this !== e.target) { //This is the fix for above. Since it changes the scale when hover over h1.
+  x = x + e.target.offsetLeft;
+  y = y + e.target.offsetTop;
+};
+
+const xWalk = Math.round((x / width * walk) - (walk / 2)); //This is just our equation to make sure we make the scale -50 to 50
+const yWalk = Math.round((y / height * walk) - (walk / 2));
+
+text.style.textShadow = `
+${xWalk}px ${yWalk}px 0 red,
+${xWalk * -1}px ${yWalk}px 0 lime,
+${yWalk}px ${xWalk * -1}px 0 blue,
+${yWalk * -1}px ${xWalk}px 0 cyan
+`;
+
+};
+
+hero.addEventListener('mousemove', shadow);
+
+
+
+
+</script>
+</body>
+</html>
